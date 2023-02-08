@@ -6,7 +6,7 @@
 /*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 12:42:37 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/02/06 11:05:30 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2023/02/08 18:20:03 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,5 +17,12 @@
 # include <stdlib.h>
 # include <signal.h>
 # include "libft/libft.h"
+
+typedef struct t_str
+{
+	char	*str;
+	int		m_alloc;
+	int		i;
+} t_str;
 
 #endif

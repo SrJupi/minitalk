@@ -6,7 +6,7 @@
 /*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 13:12:33 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/02/07 11:25:31 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2023/02/08 18:20:30 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,20 +33,25 @@ void	handle_str(int pid, char *str)
 			}
 			bit++;
 		}
-		ft_putchar_fd(*str, 1);
 		str++;
 	}
-/*	while (bit > 0)
+	while (bit > 0)
 	{
 		bit--;
 		kill(pid, SIGUSR2);
 		pause();
-	}*/
+	}
 }
 
 void	handle_sig(int sig)
 {
 	(void)sig;
+	usleep(200);
+	if (sig == SIGUSR2)
+	{
+		ft_putstr_fd("ERROR ON SERVER!\n", 1);
+		exit (1);
+	}
 }
 
 int	main(int argc, char **argv)
