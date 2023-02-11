@@ -6,41 +6,41 @@
 /*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 13:12:33 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/02/08 18:20:30 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2023/02/09 13:15:47 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	handle_str(int pid, char *str)
+void	send_char(int pid, char c)
 {
 	int	bit;
 
+	bit = 0;
+	while (bit < 8)
+	{
+		if (c & (1 << bit))
+		{
+			kill(pid, SIGUSR1);
+			pause();
+		}
+		else
+		{
+			kill(pid, SIGUSR2);
+			pause();
+		}
+		bit++;
+	}
+}
+
+void	handle_str(int pid, char *str)
+{
 	while (*str)
 	{
-		bit = 0;
-		while (bit < 8)
-		{
-			if (*str & (1 << bit))
-			{
-				kill(pid, SIGUSR1);
-				pause();
-			}
-			else
-			{
-				kill(pid, SIGUSR2);
-				pause();
-			}
-			bit++;
-		}
+		send_char(pid, *str);
 		str++;
 	}
-	while (bit > 0)
-	{
-		bit--;
-		kill(pid, SIGUSR2);
-		pause();
-	}
+	send_char(pid, '\0');
 }
 
 void	handle_sig(int sig)
