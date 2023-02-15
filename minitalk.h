@@ -6,7 +6,7 @@
 /*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 12:42:37 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/02/08 18:20:03 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2023/02/15 12:42:09 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@ typedef struct t_str
 	char	*str;
 	int		m_alloc;
 	int		i;
-} t_str;
+	int		pid;
+}	t_str;
+
+int		print_str(t_str *my_str);
+int		add_char(char c, t_str *my_str);
+void	clean_str(char **str);
 
 #endif

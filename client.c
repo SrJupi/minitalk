@@ -6,7 +6,7 @@
 /*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 13:12:33 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/02/09 13:15:47 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2023/02/15 12:46:24 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,21 +35,38 @@ void	send_char(int pid, char c)
 
 void	handle_str(int pid, char *str)
 {
+	int	size;
+	int	counter;
+	int	percent;
+
+	size = ft_strlen(str);
+	percent = size / 50;
+	if (percent == 0)
+		percent = 1;
+	counter = 1;
 	while (*str)
 	{
+		if (counter % percent == 0)
+		{
+			ft_putstr_fd("\rSending chars: ", 1);
+			ft_putnbr_fd(counter, 1);
+			ft_putchar_fd('/', 1);
+			ft_putnbr_fd(size, 1);
+		}
 		send_char(pid, *str);
 		str++;
+		counter++;
 	}
 	send_char(pid, '\0');
+	ft_putstr_fd("\nMessage Sent!\n", 1);
 }
 
 void	handle_sig(int sig)
 {
-	(void)sig;
-	usleep(200);
+	usleep(100);
 	if (sig == SIGUSR2)
 	{
-		ft_putstr_fd("ERROR ON SERVER!\n", 1);
+		ft_putstr_fd("\nERROR SENDING MESSAGE!\n", 1);
 		exit (1);
 	}
 }

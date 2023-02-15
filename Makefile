@@ -7,7 +7,7 @@ CC = gcc
 
 CFLAGS = -Wall -Wextra -Werror
 
-SRC_server = server.c
+SRC_server = server.c str_utils.c
 OBJ_server = $(SRC_server:.c=.o)
 
 SRC_client = client.c
