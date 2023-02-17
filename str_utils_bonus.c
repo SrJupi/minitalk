@@ -63,10 +63,9 @@ int	add_char(char c, t_str *my_str)
 
 int	print_str(t_str *my_str)
 {
-	int	i;
-
-	i = 0;
 	if (ft_putstr_fd(my_str->str, 1) == -1)
+		return (1);
+	if (ft_putchar_fd('\n', 1) == -1)
 		return (1);
 	clean_str(&my_str->str);
 	my_str->m_alloc = 0;
