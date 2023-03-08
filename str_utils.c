@@ -6,7 +6,7 @@
 /*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 10:05:25 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/02/15 12:47:15 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2023/03/08 12:52:23 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,13 @@ int	add_char(char c, t_str *my_str)
 
 int	print_str(t_str *my_str)
 {
-	if (ft_putstr_fd(my_str->str, 1) == -1)
-		return (1);
-	if (ft_putchar_fd('\n', 1) == -1)
-		return (1);
+	if (my_str->str != NULL)
+	{
+		if (ft_putstr_fd(my_str->str, 1) == -1)
+			return (1);
+		if (ft_putchar_fd('\n', 1) == -1)
+			return (1);
+	}
 	clean_str(&my_str->str);
 	my_str->m_alloc = 0;
 	my_str->i = 0;
