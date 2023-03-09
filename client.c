@@ -6,7 +6,7 @@
 /*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 13:12:33 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/03/07 18:42:06 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2023/03/09 13:15:18 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,47 @@ static void	handle_sig(int sig)
 	}
 }
 
+int	check_pid(char *pid_str)
+{
+	int		pid;
+	char	*pid_itoa;
+
+	pid = ft_atoi(pid_str);
+	if (pid <= 0)
+		return (1);
+	pid_itoa = ft_itoa(pid);
+	if (pid_itoa == NULL)
+		return (1);
+	if (ft_strncmp(pid_str, pid_itoa, ft_strlen(pid_str)))
+	{
+		free(pid_itoa);
+		return (1);
+	}
+	free(pid_itoa);
+	return (0);
+}
+
+int	check_args(int argc, char **argv)
+{
+	if (argc != 3)
+	{
+		ft_putstr_fd("Error. Client takes two parameters:\n", 1);
+		ft_putstr_fd("./client [SERVER_PID] [Message]\n", 1);
+		return (1);
+	}
+	if (check_pid(argv[1]))
+	{
+		ft_putstr_fd("Error. PID not valid!\n", 1);
+		return (1);
+	}
+	if (argv[2][0] == '\0')
+	{
+		ft_putstr_fd("Error. Trying to send empty string!\n", 1);
+		return (1);
+	}
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
 	struct sigaction	act;
@@ -84,19 +125,13 @@ int	main(int argc, char **argv)
 	act.sa_handler = &handle_sig;
 	sigaction(SIGUSR1, &act, NULL);
 	sigaction(SIGUSR2, &act, NULL);
-	if (argc != 3)
+	if (check_args(argc, argv))
+		return (1);
+	ft_putchar_fd('\n', 1);
+	if (handle_str(ft_atoi(argv[1]), argv[2]))
 	{
-		ft_putstr_fd("Error. Client takes two parameters:\n", 1);
-		ft_putstr_fd("./client [SERVER_PID] [Message]\n", 1);
-	}
-	else
-	{
-		ft_putchar_fd('\n', 1);
-		if (handle_str(ft_atoi(argv[1]), argv[2]))
-		{
-			ft_putstr_fd("\nError. Server not found!\n", 1);
-			return (1);
-		}
+		ft_putstr_fd("\nError. Server not found!\n", 1);
+		return (1);
 	}
 	return (0);
 }
