@@ -14,14 +14,16 @@
 
 static void	shit_happened(int other_pid, t_str *my_str)
 {
-	ft_putstr_fd("\nOh oh, some shit happened! Bye bye...\n", 2);
+	ft_putstr_fd("\nError found! Restarting server...\n", 2);
 	if (my_str->str != NULL)
 		clean_str(&my_str->str);
 	usleep(1000);
 	if (other_pid)
 		kill(other_pid, SIGUSR2);
 	kill(my_str->pid, SIGUSR2);
-	exit (1);
+	my_str->m_alloc = 0;
+	my_str->i = 0;
+	my_str->pid = 0;
 }
 
 static int	handle_char(char c, t_str *my_str)
@@ -57,11 +59,14 @@ static void	handler_usr(int signal, siginfo_t *info, void *context)
 	(void)context;
 	usleep(50);
 	if (set_pid(&my_str, info->si_pid))
+	{
 		shit_happened(info->si_pid, &my_str);
+		bit = 0;
+		c = 0;
+		return ;
+	}
 	if (signal == SIGUSR1)
 		c |= 1 << bit;
-	else
-		c |= 0 << bit;
 	bit++;
 	if (bit == 8)
 	{

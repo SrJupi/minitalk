@@ -81,6 +81,12 @@ int	check_pid(char *pid_str)
 	int		pid;
 	char	*pid_itoa;
 
+	pid = 0;
+	while (pid_str[pid])
+	{
+		if (!ft_isdigit(pid_str[pid]))
+			return (1);
+	}
 	pid = ft_atoi(pid_str);
 	if (pid <= 0)
 		return (1);
