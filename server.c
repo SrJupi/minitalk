@@ -12,7 +12,7 @@
 
 #include "minitalk.h"
 
-static void	shit_happened(int other_pid, t_str *my_str)
+static void	restart_server(int other_pid, t_str *my_str, int *bit, char *c)
 {
 	ft_putstr_fd("\nError found! Restarting server...\n", 2);
 	if (my_str->str != NULL)
@@ -24,6 +24,8 @@ static void	shit_happened(int other_pid, t_str *my_str)
 	my_str->m_alloc = 0;
 	my_str->i = 0;
 	my_str->pid = 0;
+	*bit = 0;
+	*c = 0;
 }
 
 static int	handle_char(char c, t_str *my_str)
@@ -41,13 +43,10 @@ static int	handle_char(char c, t_str *my_str)
 	return (0);
 }
 
-static int	set_pid(t_str *my_str, int pid)
+static void	set_pid(t_str *my_str, int pid)
 {
-	if (my_str->pid == 0)
-		my_str->pid = pid;
-	else if (my_str->pid != pid)
-		return (1);
-	return (0);
+	my_str->pid = pid;
+	kill(pid, SIGUSR1);
 }
 
 static void	handler_usr(int signal, siginfo_t *info, void *context)
@@ -58,22 +57,19 @@ static void	handler_usr(int signal, siginfo_t *info, void *context)
 
 	(void)context;
 	usleep(50);
-	if (set_pid(&my_str, info->si_pid))
-	{
-		shit_happened(info->si_pid, &my_str);
-		bit = 0;
-		c = 0;
-		return ;
-	}
+	if (!my_str.pid)
+		return (set_pid(&my_str, info->si_pid));
+	if (my_str.pid != info->si_pid)
+		return (restart_server(info->si_pid, &my_str, &bit, &c));
 	if (signal == SIGUSR1)
 		c |= 1 << bit;
 	bit++;
 	if (bit == 8)
 	{
 		if (handle_char(c, &my_str))
-			shit_happened(0, &my_str);
-		bit = 0;
+			return (restart_server(0, &my_str, &bit, &c));
 		c = 0;
+		bit = 0;
 	}
 	kill(info->si_pid, SIGUSR1);
 }

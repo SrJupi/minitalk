@@ -12,6 +12,8 @@
 
 #include "minitalk.h"
 
+int	g_isserver = 0;
+
 static void	print_status(int counter, int size)
 {
 	ft_putstr_fd("\rSending chars: ", 1);
@@ -69,58 +71,16 @@ static int	handle_str(int pid, char *str)
 static void	handle_sig(int sig)
 {
 	usleep(100);
+	if (!g_isserver)
+	{
+		if (sig == SIGUSR1)
+			g_isserver = 1;
+	}
 	if (sig == SIGUSR2)
 	{
 		ft_putstr_fd("\nERROR SENDING MESSAGE!\n", 1);
 		exit (1);
 	}
-}
-
-int	check_pid(char *pid_str)
-{
-	int		pid;
-	char	*pid_itoa;
-
-	pid = 0;
-	while (pid_str[pid])
-	{
-		if (!ft_isdigit(pid_str[pid]))
-			return (1);
-	}
-	pid = ft_atoi(pid_str);
-	if (pid <= 0)
-		return (1);
-	pid_itoa = ft_itoa(pid);
-	if (pid_itoa == NULL)
-		return (1);
-	if (ft_strncmp(pid_str, pid_itoa, ft_strlen(pid_str)))
-	{
-		free(pid_itoa);
-		return (1);
-	}
-	free(pid_itoa);
-	return (0);
-}
-
-int	check_args(int argc, char **argv)
-{
-	if (argc != 3)
-	{
-		ft_putstr_fd("Error. Client takes two parameters:\n", 1);
-		ft_putstr_fd("./client [SERVER_PID] [Message]\n", 1);
-		return (1);
-	}
-	if (check_pid(argv[1]))
-	{
-		ft_putstr_fd("Error. PID not valid!\n", 1);
-		return (1);
-	}
-	if (argv[2][0] == '\0')
-	{
-		ft_putstr_fd("Error. Trying to send empty string!\n", 1);
-		return (1);
-	}
-	return (0);
 }
 
 int	main(int argc, char **argv)
@@ -133,7 +93,10 @@ int	main(int argc, char **argv)
 	sigaction(SIGUSR2, &act, NULL);
 	if (check_args(argc, argv))
 		return (1);
-	ft_putchar_fd('\n', 1);
+	if (check_server(ft_atoi(argv[1])))
+		return (not_server_error());
+	if (!g_isserver)
+		return (not_server_error());
 	if (handle_str(ft_atoi(argv[1]), argv[2]))
 	{
 		ft_putstr_fd("\nError. Server not found!\n", 1);

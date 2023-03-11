@@ -30,4 +30,14 @@ int		print_str(t_str *my_str);
 int		add_char(char c, t_str *my_str);
 void	clean_str(char **str);
 
+int		check_pid(char *pid_str);
+int		check_args(int argc, char **argv);
+int		check_server(int pid);
+
+int		param_error(void);
+int		pid_error(void);
+int		empty_str_error(void);
+int		not_server_error(void);
+
+
 #endif

@@ -13,7 +13,7 @@ OBJ_server = $(SRC_server:.c=.o)
 SRC_BONUS_server = server_bonus.c str_utils_bonus.c
 OBJ_BONUS_server = $(SRC_BONUS_server:.c=.o)
 
-SRC_client = client.c
+SRC_client = client.c client_checks.c client_errors.c
 OBJ_client = $(SRC_client:.c=.o)
 
 SRC_BONUS_client = client_bonus.c
