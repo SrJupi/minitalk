@@ -7,13 +7,13 @@ CC = gcc
 
 CFLAGS = -Wall -Wextra -Werror
 
-SRC_server = server.c str_utils.c
+SRC_server = server.c str_utils.c ft_checksum.c server_receive_utils.c
 OBJ_server = $(SRC_server:.c=.o)
 
-SRC_BONUS_server = server_bonus.c str_utils_bonus.c
+SRC_BONUS_server = server_bonus.c str_utils_bonus.c ft_checksum.c server_receive_utils.c
 OBJ_BONUS_server = $(SRC_BONUS_server:.c=.o)
 
-SRC_client = client.c client_checks.c client_errors.c
+SRC_client = client.c client_checks.c client_errors.c client_send_utils.c ft_checksum.c
 OBJ_client = $(SRC_client:.c=.o)
 
 SRC_BONUS_client = client_bonus.c

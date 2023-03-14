@@ -14,71 +14,14 @@
 
 int	g_isserver = 0;
 
-static void	print_status(int counter, int size)
-{
-	ft_putstr_fd("\rSending chars: ", 1);
-	ft_putnbr_fd(counter, 1);
-	ft_putchar_fd('/', 1);
-	ft_putnbr_fd(size, 1);
-}
-
-static int	send_char(int pid, char c)
-{
-	int	bit;
-	int	sig;
-
-	bit = 0;
-	while (bit < 8)
-	{
-		if (c & (1 << bit))
-			sig = SIGUSR1;
-		else
-			sig = SIGUSR2;
-		if (kill(pid, sig) == -1)
-			return (1);
-		pause();
-		bit++;
-	}
-	return (0);
-}
-
-static int	handle_str(int pid, char *str)
-{
-	int	size;
-	int	counter;
-	int	percent;
-
-	size = ft_strlen(str);
-	percent = size / 50;
-	if (percent == 0)
-		percent = 1;
-	counter = 0;
-	while (*str)
-	{
-		if (counter % percent == 0)
-			print_status(counter, size);
-		if (send_char(pid, *str))
-			return (1);
-		str++;
-		counter++;
-	}
-	print_status(counter--, size);
-	send_char(pid, '\0');
-	ft_putstr_fd("\nMessage Sent!\n", 1);
-	return (0);
-}
-
 static void	handle_sig(int sig)
 {
 	usleep(100);
-	if (!g_isserver)
-	{
-		if (sig == SIGUSR1)
-			g_isserver = 1;
-	}
+	if (!g_isserver && sig == SIGUSR1)
+		g_isserver = 1;
 	if (sig == SIGUSR2)
 	{
-		ft_putstr_fd("\nERROR SENDING MESSAGE!\n", 1);
+		ft_putstr_fd("\nError sending message!\n", 2);
 		exit (1);
 	}
 }
@@ -99,7 +42,7 @@ int	main(int argc, char **argv)
 		return (not_server_error());
 	if (handle_str(ft_atoi(argv[1]), argv[2]))
 	{
-		ft_putstr_fd("\nError. Server not found!\n", 1);
+		ft_putstr_fd("\nError sending the message!\n", 2);
 		return (1);
 	}
 	return (0);

@@ -12,67 +12,59 @@
 
 #include "minitalk.h"
 
-void	clean_str(char **str)
+void	clean_str(t_str *my_str)
 {
-	if (*str != NULL)
-	{
-		free(*str);
-		*str = NULL;
-	}
+	if (my_str->str != NULL)
+		free(my_str->str);
+	ft_bzero(my_str, sizeof(t_str));
 }
 
-static int	expand_str(t_str *my_str)
+int	alloc_mem(size_t size, t_str *my_str)
 {
-	char	*tmp;
-
-	if (my_str->m_alloc == 0)
-	{
-		my_str->str = (char *) malloc (512);
-		if (my_str->str == NULL)
-			return (1);
-		ft_bzero(my_str->str, 512);
-		my_str->m_alloc = 512;
-		return (0);
-	}
-	tmp = (char *) malloc (my_str->m_alloc * 2);
-	if (tmp == NULL)
-	{
-		clean_str(&my_str->str);
+	my_str->str = (char *) malloc (size);
+	if (my_str->str == NULL)
 		return (1);
-	}
-	ft_bzero(tmp, my_str->m_alloc * 2);
-	ft_strlcpy(tmp, my_str->str, my_str->m_alloc);
-	clean_str(&my_str->str);
-	my_str->str = tmp;
-	my_str->m_alloc *= 2;
-	tmp = NULL;
+	ft_bzero(my_str->str, size);
+	my_str->m_alloc = size;
 	return (0);
 }
 
 int	add_char(char c, t_str *my_str)
 {
 	if (my_str->i >= my_str->m_alloc - 1)
-	{
-		if (expand_str(my_str))
-			return (1);
-	}
+		return (1);
 	my_str->str[my_str->i] = c;
 	my_str->i += 1;
 	return (0);
 }
 
+int	print_message(int err)
+{
+	if (err == 0)
+		return (0);
+	ft_putstr_fd("Error: ", 2);
+	if (err == 1)
+		ft_putstr_fd("string is not same size\n", 2);
+	if (err == 2)
+		ft_putstr_fd("checksum is not the same\n", 2);
+	if (err == 3)
+		ft_putstr_fd("write error\n", 2);
+	return (1);
+}
+
 int	print_str(t_str *my_str)
 {
-	if (my_str->str != NULL)
-	{
-		if (ft_putstr_fd(my_str->str, 1) == -1)
-			return (1);
-		if (ft_putchar_fd('\n', 1) == -1)
-			return (1);
-	}
-	clean_str(&my_str->str);
-	my_str->m_alloc = 0;
-	my_str->i = 0;
-	my_str->pid = 0;
-	return (0);
+	int	err;
+
+	err = 0;
+	if (my_str->m_alloc != ft_strlen(my_str->str) + 1)
+		err = 1;
+	else if (my_str->check != ft_checksum(my_str->str))
+		err = 2;
+	else if (ft_putstr_fd(my_str->str, 1) == -1)
+		err = 3;
+	else if (ft_putchar_fd('\n', 1) == -1)
+		err = 3;
+	clean_str(my_str);
+	return (print_message(err));
 }

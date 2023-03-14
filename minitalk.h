@@ -21,14 +21,24 @@
 typedef struct t_str
 {
 	char	*str;
-	int		m_alloc;
-	int		i;
+	size_t	m_alloc;
+	size_t	i;
+	char	check;
 	int		pid;
 }	t_str;
 
+int		receive_size(int signal, t_str *my_str);
+int		receive_check(int signal, t_str *my_str);
+int		receive_char(int signal, t_str *my_str);
+
+int		handle_str(int pid, char *str);
+
+char	ft_checksum(char *str);
+
 int		print_str(t_str *my_str);
 int		add_char(char c, t_str *my_str);
-void	clean_str(char **str);
+int		alloc_mem(size_t size, t_str *my_str);
+void	clean_str(t_str *my_str);
 
 int		check_pid(char *pid_str);
 int		check_args(int argc, char **argv);
