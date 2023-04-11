@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   client_checks.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/28 10:33:27 by lsulzbac          #+#    #+#             */
+/*   Updated: 2023/03/28 10:50:39 by lsulzbac         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minitalk.h"
 
 int	check_pid(char *pid_str)
@@ -42,6 +54,6 @@ int	check_server(int pid)
 {
 	if (kill(pid, SIGUSR1) == -1)
 		return (1);
-	usleep(500);
+	usleep(2000);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 13:12:22 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/03/09 13:15:14 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2023/04/11 12:57:09 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,30 @@ static void	set_pid(t_str *my_str, int pid)
 	kill(pid, SIGUSR1);
 }
 
+static void	block_signals(void)
+{
+	sigset_t	sigset;
+
+	sigemptyset(&sigset);
+	sigaddset(&sigset, SIGUSR1);
+	sigaddset(&sigset, SIGUSR2);
+	sigprocmask(SIG_BLOCK, &sigset, NULL);
+}
+
+static void	unblock_signals(void)
+{
+	sigset_t	sigset;
+
+	sigfillset(&sigset);
+	sigprocmask(SIG_UNBLOCK, &sigset, NULL);
+}
+
 static void	handler_usr(int signal, siginfo_t *info, void *context)
 {
 	static t_str	my_str;
 
 	(void)context;
+	block_signals();
 	usleep(50);
 	if (!my_str.pid)
 		return (set_pid(&my_str, info->si_pid));
@@ -67,6 +86,9 @@ int	main(void)
 	sigaction(SIGUSR1, &act, NULL);
 	sigaction(SIGUSR2, &act, NULL);
 	while (1)
+	{
+		unblock_signals();
 		pause();
+	}
 	return (0);
 }

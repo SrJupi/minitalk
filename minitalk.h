@@ -6,7 +6,7 @@
 /*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 12:42:37 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/02/15 12:42:09 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2023/03/28 10:46:58 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,5 @@ int		param_error(void);
 int		pid_error(void);
 int		empty_str_error(void);
 int		not_server_error(void);
-
 
 #endif
