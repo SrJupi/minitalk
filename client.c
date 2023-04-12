@@ -6,7 +6,7 @@
 /*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 13:12:33 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/03/28 10:50:41 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2023/04/12 11:23:03 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	g_isserver = 0;
 
 static void	handle_sig(int sig)
 {
-	usleep(100);
+	usleep(200);
 	if (!g_isserver && sig == SIGUSR1)
 		g_isserver = 1;
 	if (sig == SIGUSR2)
