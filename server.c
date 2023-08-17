@@ -12,31 +12,12 @@
 
 #include "minitalk.h"
 
-/*static void	block_signals(void)
-{
-	sigset_t	sigset;
-
-	sigemptyset(&sigset);
-	sigaddset(&sigset, SIGUSR1);
-	sigaddset(&sigset, SIGUSR2);
-	sigprocmask(SIG_BLOCK, &sigset, NULL);
-}
-
-static void	unblock_signals(void)
-{
-	sigset_t	sigset;
-
-	sigfillset(&sigset);
-	sigprocmask(SIG_UNBLOCK, &sigset, NULL);
-}*/
-
 static void	restart_server(t_str *my_str)
 {
 	ft_putstr_fd("\nError found! Restarting server...\n", 2);
 	usleep(1000);
 	kill(my_str->pid, SIGUSR2);
 	clean_str(my_str);
-//	unblock_signals();
 }
 
 static void	set_pid(t_str *my_str, int pid)
@@ -50,7 +31,6 @@ static void	handler_usr(int signal, siginfo_t *info, void *context)
 	static t_str	my_str;
 
 	(void)context;
-//	block_signals();
 	usleep(200);
 	if (!my_str.pid)
 		return (set_pid(&my_str, info->si_pid));
@@ -68,7 +48,6 @@ static void	handler_usr(int signal, siginfo_t *info, void *context)
 		if (receive_char(signal, &my_str))
 			return (restart_server(&my_str));
 	}
-//	unblock_signals();
 	kill(info->si_pid, SIGUSR1);
 }
 
@@ -84,8 +63,6 @@ int	main(void)
 	sigaction(SIGUSR1, &act, NULL);
 	sigaction(SIGUSR2, &act, NULL);
 	while (1)
-	{
-		pause();
-	}
+		;
 	return (0);
 }
