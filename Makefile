@@ -10,15 +10,8 @@ CFLAGS = -Wall -Wextra -Werror
 SRC_server = server.c str_utils.c ft_checksum.c server_receive_utils.c
 OBJ_server = $(SRC_server:.c=.o)
 
-SRC_BONUS_server = server_bonus.c str_utils_bonus.c ft_checksum.c server_receive_utils.c
-OBJ_BONUS_server = $(SRC_BONUS_server:.c=.o)
-
 SRC_client = client.c client_checks.c client_errors.c client_send_utils.c ft_checksum.c
 OBJ_client = $(SRC_client:.c=.o)
-
-SRC_BONUS_client = client_bonus.c
-OBJ_BONUS_client = $(SRC_BONUS_client:.c=.o)
-
 
 %.o : %.c $(HEADER)
 	@$(CC) $(CFLAGS) -c $< -o $@
@@ -35,15 +28,8 @@ server: $(OBJ_server) $(HEADER) $(lib)
 	@$(CC) $(CFLAGS) $(OBJ_server) -L./libft -lft -o server
 	@echo "Server compiled"
 
-bonus: lib server_bonus client_bonus
-
-client_bonus: $(OBJ_BONUS_client) $(HEADER) $(lib)
-	@$(CC) $(CFLAGS) $(OBJ_BONUS_client) -L./libft -lft -o client_bonus
-	@echo "Client compiled"
-
-server_bonus: $(OBJ_BONUS_server) $(HEADER) $(lib) 
-	@$(CC) $(CFLAGS) $(OBJ_BONUS_server) -L./libft -lft -o server_bonus
-	@echo "Server compiled"
+bonus: lib server client
+	@echo "Bonus compiled"
 
 re: fclean all
 

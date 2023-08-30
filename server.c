@@ -6,7 +6,7 @@
 /*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 13:12:22 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/04/12 11:34:18 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2023/08/30 17:57:32 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ static void	restart_server(t_str *my_str)
 
 static void	set_pid(t_str *my_str, int pid)
 {
+	if (pid <= 0)
+		return ;
 	my_str->pid = pid;
 	kill(pid, SIGUSR1);
 }
