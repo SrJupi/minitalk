@@ -17,8 +17,11 @@ OBJ_client = $(SRC_client:.c=.o)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 all: 	lib server client
+	@echo "Minitalk compiled"
 
 $(NAME): lib server client
+	@echo "Minitalk compiled"
+
 
 client: $(OBJ_client) $(HEADER) $(lib)
 	@$(CC) $(CFLAGS) $(OBJ_client) -L./libft -lft -o client
@@ -49,4 +52,4 @@ clean:
 lib: 
 	@make -C libft
 
-.PHONY: all re re_bonus clean fclean
+.PHONY: all re re_bonus clean fclean bonus

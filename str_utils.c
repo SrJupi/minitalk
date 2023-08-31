@@ -6,12 +6,11 @@
 /*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 10:05:25 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/08/30 18:53:40 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2023/08/31 11:02:37 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
-#include <stdio.h>
 
 void	clean_str(t_str *my_str)
 {

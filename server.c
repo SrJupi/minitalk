@@ -6,12 +6,11 @@
 /*   By: lsulzbac <lsulzbac@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 13:12:22 by lsulzbac          #+#    #+#             */
-/*   Updated: 2023/08/30 18:53:33 by lsulzbac         ###   ########.fr       */
+/*   Updated: 2023/08/31 11:02:30 by lsulzbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
-#include <stdio.h>
 
 static void	restart_server(t_str *my_str)
 {
@@ -35,7 +34,7 @@ static void	handler_usr(int signal, siginfo_t *info, void *context)
 	static t_str	my_str;
 
 	(void)context;
-	usleep(200);
+	usleep(500);
 	if (!my_str.pid)
 		return (set_pid(&my_str, info->si_pid));
 	else if (my_str.pid != info->si_pid)
